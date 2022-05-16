@@ -29,7 +29,6 @@ Deploying the application to the S3 bucket is not required, it can be run locall
 
 ## Requirements
 
-* Create a fork of the repo and push there the solution of the challenge.
 * Use python 3.8+
 * Use Typescript
 * Include instructions how to deploy and run the code
