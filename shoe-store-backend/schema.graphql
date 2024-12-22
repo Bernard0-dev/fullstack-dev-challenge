@@ -1,0 +1,14 @@
+type Shoe {
+    id: ID!
+    brand: String!
+    availableSizes: [Int!]!
+    price: Float!
+}
+
+type Order {
+    id: ID!
+    client: String!
+    shoeReference: String!
+    size: Int!
+    shippingInfo: String!
+}

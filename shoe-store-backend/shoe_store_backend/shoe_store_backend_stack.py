@@ -1,4 +1,4 @@
-from aws_cdk import Stack, aws_dynamodb
+from aws_cdk import Stack, aws_appsync, aws_dynamodb
 from constructs import Construct
 
 
@@ -24,3 +24,17 @@ class ShoeStoreBackendStack(Stack):
             ),
             billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
         )
+
+        # APPSYNC
+        api = aws_appsync.GraphqlApi(
+            self,
+            "ShoeStoreApi",
+            name="ShoeStoreApi",
+            schema=aws_appsync.Schema.from_asset("schema.graphql"),
+            authorization_config=aws_appsync.AuthorizationConfig(
+                default_authorization=aws_appsync.AuthorizationMode.API_KEY,
+            ),
+        )
+
+        api.add_dynamo_db_data_source("ShoesDataSource", shoes_table)
+        api.add_dynamo_db_data_source("OrdersDataSource", orders_table)
