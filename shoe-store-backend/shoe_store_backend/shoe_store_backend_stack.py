@@ -1,4 +1,8 @@
-from aws_cdk import Stack, aws_appsync, aws_dynamodb
+import os
+
+import aws_cdk.aws_appsync as appsync
+import aws_cdk.aws_dynamodb as dynamodb
+from aws_cdk import Stack
 from constructs import Construct
 
 
@@ -7,33 +11,32 @@ class ShoeStoreBackendStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # DYNAMODB
-        shoes_table = aws_dynamodb.Table(
+        shoes_table = dynamodb.Table(
             self,
             "Shoes",
-            partition_key=aws_dynamodb.Attribute(
-                name="id", type=aws_dynamodb.AttributeType.STRING
+            partition_key=dynamodb.Attribute(
+                name="id", type=dynamodb.AttributeType.STRING
             ),
-            billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
         )
 
-        orders_table = aws_dynamodb.Table(
+        orders_table = dynamodb.Table(
             self,
             "Orders",
-            partition_key=aws_dynamodb.Attribute(
-                name="id", type=aws_dynamodb.AttributeType.STRING
+            partition_key=dynamodb.Attribute(
+                name="id", type=dynamodb.AttributeType.STRING
             ),
-            billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
         )
 
         # APPSYNC
-        api = aws_appsync.GraphqlApi(
+        schema_file_path = os.path.join(os.path.dirname(__file__), "schema.graphql")
+
+        api = appsync.GraphqlApi(
             self,
             "ShoeStoreApi",
             name="ShoeStoreApi",
-            schema=aws_appsync.Schema.from_asset("schema.graphql"),
-            authorization_config=aws_appsync.AuthorizationConfig(
-                default_authorization=aws_appsync.AuthorizationMode.API_KEY,
-            ),
+            definition=appsync.Definition.from_file(schema_file_path),
         )
 
         api.add_dynamo_db_data_source("ShoesDataSource", shoes_table)
