@@ -12,3 +12,11 @@ type Order {
     size: Int!
     shippingInfo: String!
 }
+
+type Query {
+    getShoes(brand: String): [Shoe]
+}
+
+type Mutation {
+    createOrder(client: String!, shoeReference: ID!, size: String!, shippingInfo: String!): Order
+}
