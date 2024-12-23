@@ -41,8 +41,12 @@ class ShoeStoreBackendStack(Stack):
             name="ShoeStoreApi",
             definition=appsync.Definition.from_file(schema_file_path),
         )
-        api.add_dynamo_db_data_source("ShoesDataSource", shoes_table)
-        api.add_dynamo_db_data_source("OrdersDataSource", orders_table)
+        ds_shoes = api.add_dynamo_db_data_source("ShoesDataSource", shoes_table)
+        ds_orders = api.add_dynamo_db_data_source("OrdersDataSource", orders_table)
+
+        # RESOLVERS
+        self.setup_shoes_resolvers(data_source=ds_shoes, table=shoes_table)
+        self.setup_orders_resolvers(data_source=ds_orders, table=orders_table)
 
         self.setup_initial_data(shoes_table=shoes_table, orders_table=orders_table)
 
@@ -87,4 +91,31 @@ class ShoeStoreBackendStack(Stack):
                 ),
             },
             role=custom_resource_role,
+        )
+
+    def setup_shoes_resolvers(
+        self, data_source: appsync.DynamoDbDataSource, table: dynamodb.Table
+    ):
+        data_source.create_resolver(
+            "QueryGetShoesResolver",
+            type_name="Query",
+            field_name="getShoes",
+            request_mapping_template=appsync.MappingTemplate.dynamo_db_query(
+                cond=appsync.KeyCondition.eq("brand", "brand"),
+            ),
+            response_mapping_template=appsync.MappingTemplate.dynamo_db_result_list(),
+        )
+
+    def setup_orders_resolvers(
+        self, data_source: appsync.DynamoDbDataSource, table: dynamodb.Table
+    ):
+        data_source.create_resolver(
+            "MutationAddOrderResolver",
+            type_name="Mutation",
+            field_name="addOrder",
+            request_mapping_template=appsync.MappingTemplate.dynamo_db_put_item(
+                appsync.PrimaryKey.partition("id").auto(),
+                appsync.Values.projecting("input"),
+            ),
+            response_mapping_template=appsync.MappingTemplate.dynamo_db_result_item(),
         )
