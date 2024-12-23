@@ -65,6 +65,7 @@ class ShoeStoreBackendStack(Stack):
             },
         )
         shoes_table.grant_write_data(initial_data_lambda)
+        orders_table.grant_write_data(initial_data_lambda)
 
         custom_resource_role = iam.Role(
             self,
