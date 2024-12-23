@@ -60,7 +60,7 @@ class ShoeStoreBackendStack(Stack):
             handler="insert.handler",
             code=aws_lambda.Code.from_asset("lambda/initial_data"),
             environment={
-                "SHOES_TABLE_NAME": shoes_table.table_name,
+                "SHOES_TABLE": shoes_table.table_name,
                 "ORDERS_TABLE": orders_table.table_name,
             },
         )
@@ -112,9 +112,9 @@ class ShoeStoreBackendStack(Stack):
         self, data_source: appsync.DynamoDbDataSource, table: dynamodb.Table
     ):
         data_source.create_resolver(
-            "MutationAddOrderResolver",
+            "MutationCreateOrderResolver",
             type_name="Mutation",
-            field_name="addOrder",
+            field_name="createOrder",
             request_mapping_template=appsync.MappingTemplate.dynamo_db_put_item(
                 appsync.PrimaryKey.partition("id").auto(),
                 appsync.Values.projecting("input"),
