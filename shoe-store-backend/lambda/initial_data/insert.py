@@ -4,25 +4,25 @@ import os
 import boto3
 
 SHOES = [
-    {"id": "1", "brand": "Nike", "available_sizes": ["40", "41", "42"], "price": 100},
-    {"id": "2", "brand": "Adidas", "available_sizes": ["39", "40", "43"], "price": 120},
-    {"id": "3", "brand": "Puma", "available_sizes": ["38", "39", "40"], "price": 90},
+    {"id": "1", "brand": "Nike", "availableSizes": ["40", "41", "42"], "price": 100},
+    {"id": "2", "brand": "Adidas", "availableSizes": ["39", "40", "43"], "price": 120},
+    {"id": "3", "brand": "Puma", "availableSizes": ["38", "39", "40"], "price": 90},
 ]
 
 ORDERS = [
     {
         "id": "1",
         "client": "John Doe",
-        "shoe_reference": "1",
+        "shoeReference": "1",
         "size": "41",
-        "shipping_info": "123 Main St",
+        "shippingInfo": "123 Main St",
     },
     {
         "id": "2",
         "client": "Jane Doe",
-        "shoe_reference": "2",
+        "shoeReference": "2",
         "size": "40",
-        "shipping_info": "456 Elm St",
+        "shippingInfo": "456 Elm St",
     },
 ]
 
