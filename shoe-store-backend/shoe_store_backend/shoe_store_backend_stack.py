@@ -17,6 +17,7 @@ class ShoeStoreBackendStack(Stack):
         shoes_table = dynamodb.Table(
             self,
             "Shoes",
+            table_name="Shoes",
             partition_key=dynamodb.Attribute(
                 name="id", type=dynamodb.AttributeType.STRING
             ),
@@ -26,6 +27,7 @@ class ShoeStoreBackendStack(Stack):
         orders_table = dynamodb.Table(
             self,
             "Orders",
+            table_name="Orders",
             partition_key=dynamodb.Attribute(
                 name="id", type=dynamodb.AttributeType.STRING
             ),
