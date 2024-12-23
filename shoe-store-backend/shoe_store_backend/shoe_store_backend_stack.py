@@ -23,6 +23,12 @@ class ShoeStoreBackendStack(Stack):
             ),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
         )
+        shoes_table.add_global_secondary_index(
+            index_name="brand-index",
+            partition_key=dynamodb.Attribute(
+                name="brand", type=dynamodb.AttributeType.STRING
+            ),
+        )
 
         orders_table = dynamodb.Table(
             self,
