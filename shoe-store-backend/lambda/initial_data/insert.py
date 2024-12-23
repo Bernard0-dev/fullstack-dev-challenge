@@ -11,14 +11,14 @@ SHOES = [
 
 ORDERS = [
     {
-        "order_id": "1",
+        "id": "1",
         "client": "John Doe",
         "shoe_reference": "1",
         "size": "41",
         "shipping_info": "123 Main St",
     },
     {
-        "order_id": "2",
+        "id": "2",
         "client": "Jane Doe",
         "shoe_reference": "2",
         "size": "40",
